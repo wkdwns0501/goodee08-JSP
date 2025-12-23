@@ -7,8 +7,8 @@
 <title>ch02_ex07</title>
 </head>
 <body>
-	<%! String str = "Hello, Java Server Pages"; %>
-	<%!
+	<%! 
+		String str = "Hello, Java Server Pages";
 		public String getString() {
 				return str;
 		}	

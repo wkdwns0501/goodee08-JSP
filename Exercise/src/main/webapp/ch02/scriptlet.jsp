@@ -8,7 +8,9 @@
 <title>ch02_ex08</title>
 </head>
 <body>
-	<%! Date date = new Date(); %>
-	<% out.println(date); %>
+	<% 
+		Date now = new Date(); 
+		out.println("Today: " + now);
+	%>  
 </body>
 </html>
