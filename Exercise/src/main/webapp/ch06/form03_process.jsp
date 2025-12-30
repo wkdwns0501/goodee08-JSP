@@ -1,0 +1,28 @@
+<%@page import="java.util.Enumeration"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ch06_ex08</title>
+</head>
+<body>
+	<%
+		StringBuffer sb = new StringBuffer();
+		Enumeration<String> paramNames = request.getParameterNames();
+		while (paramNames.hasMoreElements()) {
+			String name = paramNames.nextElement();
+			String[] paramValues = request.getParameterValues(name);
+			sb.append("선택한 과일: ");
+			for (int i = 0; i < paramValues.length; i++) {
+				sb.append(paramValues[i]);
+				if (i < paramValues.length-1) {
+					sb.append(", ");
+				}
+			}
+		}
+	%>
+	<p><%= sb %></p>
+</body>
+</html>
