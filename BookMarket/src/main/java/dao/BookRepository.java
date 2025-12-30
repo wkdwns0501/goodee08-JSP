@@ -9,6 +9,15 @@ public class BookRepository {
 	
 	private ArrayList<Book> listOfBooks = new ArrayList<Book>();
 	
+	// 기본 생성자에 대한 객체 변수 instance를 작성
+	private static BookRepository instance = new BookRepository();
+	
+	// 객체 변수 instance에 대한 Getter 메소드 작성
+	public static BookRepository getInstance() {
+		return instance;
+	}
+	// 목적: 객체 하나만 만들어서 계속 공유해서 쓰겠다는 의미
+	
 	public BookRepository() {
 		// 더미 데이터 생성 및 추가
 		Book book1 = new Book("ISBN1234", "C# 프로그래밍", 27000);
@@ -47,4 +56,29 @@ public class BookRepository {
 	public ArrayList<Book> getAllBooks() {
 		return listOfBooks;
 	}
+	
+	// 도서 상세 정보를 가져오는 메소드
+	public Book getBookById(String bookId) {
+		if (bookId == null) return null;
+		
+//		for (int i = 0; i < listOfBooks.size(); i++) {
+//			if(listOfBooks.get(i) != null && bookId.equals(listOfBooks.get(i).getBookId())) {
+//				return listOfBooks.get(i); 
+//			}
+//		}
+//		return null;
+		
+		for (Book book : listOfBooks) {
+			if (book != null && bookId.equals(book.getBookId())) {
+				return book; // 찾으면 바로 반환
+			}
+		}
+		return null; // 없으면 null 반환
+	}
+	
+	// 신규 도서 데이터를 저장하는 메소드
+	public void addBook(Book book) {
+		listOfBooks.add(book);
+	}
+	
 }

@@ -1,9 +1,10 @@
+<%@page import="dao.BookRepository"%>
 <%@page import="dto.Book"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- session이 연결되는 동안 도서 데이터를 공유하기 위해 사용 -->
-<jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session"/>
+<%-- <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session"/> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +25,14 @@
 		</jsp:include>
     
     <%
-    	ArrayList<Book> listOfBooks = bookDAO.getAllBooks();
+    	// 자바빈 사용
+    	// ArrayList<Book> listOfBooks = bookDAO.getAllBooks();
+    
+    	// BookRepository 공유 객체로 변경
+    	// 이유: 자바빈을 쓰면 해당 객체가 scope 내에 존재하면 재사용하고
+    	// 존재하지 않으면 새롭게 생성하기 때문에 객체 내 데이터 불일치 발생
+    	BookRepository dao = BookRepository.getInstance();
+    	ArrayList<Book> listOfBooks = dao.getAllBooks();
     %>
     
     <!-- 본문 영역 -->
@@ -44,6 +52,11 @@
         	</p>
         	<p><%= book.getDescription().substring(0, 60) %>...</p>
         	<p><%= book.getUnitPrice() %>원</p>
+        	<p>
+        		<a href="book.jsp?id=<%= book.getBookId() %>" class="btn btn-secondary" role="button">
+        			상세 정보 &raquo;
+        		</a>
+        	</p>
         </div>
       </div>
       <%
