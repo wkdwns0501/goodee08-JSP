@@ -15,7 +15,10 @@
 			String name = paramNames.nextElement();
 			String[] paramValues = request.getParameterValues(name);
 			for (int i = 0; i < paramValues.length; i++) {
-				sb.append(name + " : " + paramValues[i] + "<br>");
+				sb.append(name)
+				  .append(" : ")
+				  .append(paramValues[i])
+				  .append("<br>");
 			}
 		}
 	%>

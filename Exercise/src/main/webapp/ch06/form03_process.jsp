@@ -7,17 +7,17 @@
 <meta charset="UTF-8">
 <title>ch06_ex08</title>
 </head>
-<body>
+<body>paramValues
 	<%
+		String[] paramValues = request.getParameterValues("fruits");
+	
 		StringBuffer sb = new StringBuffer();
-		Enumeration<String> paramNames = request.getParameterNames();
-		while (paramNames.hasMoreElements()) {
-			String name = paramNames.nextElement();
-			String[] paramValues = request.getParameterValues(name);
-			sb.append("선택한 과일: ");
+		sb.append("선택한 과일: ");
+	
+		if (paramValues != null) {
 			for (int i = 0; i < paramValues.length; i++) {
 				sb.append(paramValues[i]);
-				if (i < paramValues.length-1) {
+				if (i < paramValues.length - 1) {
 					sb.append(", ");
 				}
 			}
