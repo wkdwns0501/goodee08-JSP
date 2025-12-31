@@ -22,7 +22,8 @@
     <!-- 본문 영역 -->
     <div class="row align-items-md-stretch">
     	<!-- 도서 정보 등록 페이지 만들기 -->
-    	<form name="newBook" action="processAddBook.jsp" method="post">
+    	<!-- <form name="newBook" action="processAddBook.jsp" method="post"> -->
+    	<form name="newBook" action="<%= request.getContextPath() %>/processAddBook" method="post" enctype="multipart/form-data">
     		<div class="mb-3 row">
 					<label class="col-sm-2">도서코드</label>
 					<div class="col-sm-3">
@@ -86,6 +87,14 @@
 						<input type="radio" name="condition" value="EBook"> E-Book
 					</div>				
 				</div>		
+				
+				<div class="mb-3 row">
+					<label class="col-sm-2">이미지</label>
+					<div class="col-sm-5">
+						<input type="file" name="bookImage" class="form-control">
+					</div>				
+				</div>		
+				
 				<div class="mb-3 row">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button type="submit" class="btn btn-primary">등록</button>

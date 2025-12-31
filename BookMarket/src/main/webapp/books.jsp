@@ -12,6 +12,8 @@
 	<title>도서 목록</title>
 	<!-- 부트스트랩 연결 -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- 로컬에서 직접 넣기(인터넷이 안되는 폐쇠망이나 내부망일때 파일을 직접 넣어 사용) -->
+	<!-- <link href="resources/css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
 <body>
 	<div class="container py-4">
@@ -44,6 +46,11 @@
       <div class="col-md-4">
         <div class="h-100 p-2">
         	<!-- 도서 정보 -->
+        	<!-- 웹앱 내부 폴더 사용 시 -->
+					<%-- <img alt="도서이미지" src="resources/images/<%= book.getFilename() %>" style="width: 250px; height:350px;"> --%>        	
+					<!-- 외부 폴더 사용 시 (server.xml 이나 context.xml 파일에 설정해야함) -->
+					<img alt="도서이미지" src="<%= request.getContextPath() %>/images/<%= book.getFilename() %>" style="width: 250px; height:350px;">        	
+        	
         	<h5><b><%= book.getName() %></b></h5>
         	<p>
         		<%= book.getAuthor() %>
