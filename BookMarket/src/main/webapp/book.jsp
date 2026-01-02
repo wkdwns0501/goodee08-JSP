@@ -3,6 +3,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page errorPage="exceptionNoBookId.jsp" %>
 <!-- session이 연결되는 동안 도서 데이터를 공유하기 위해 사용 -->
 <%-- <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session"/> --%>
 <!DOCTYPE html>
@@ -36,7 +37,12 @@
     
     <!-- 본문 영역 -->
     <div class="row align-items-md-stretch">
-      <div class="col-md-12">
+    	<div class="col-md-5">
+    		<img alt="도서이미지" src="<%= request.getContextPath() %>/images/<%= book.getFilename() %>" 
+    				 style="width: 70%;">
+    	</div>
+    
+      <div class="col-md-6">
       	<!-- 도서 정보로 채워넣기(데이터 동적 바인딩) -->
       	<h3><b><%= book.getName() %></b></h3>
 				<p><%= book.getDescription() %></p>
