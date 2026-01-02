@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+	<!-- 오류 코드로 오류 페이지 호출하기 -->
+	<error-page>
+		<error-code>500</error-code> <!-- 500: 주로 서버 코드 상에서 발생한 오류 -->
+		<location>/ch11/errorCode_500.jsp</location>
+	</error-page>
+	<!-- 예외 유형으로 오류 페이지 호출하기 -->
+	<error-page> <!-- ArithmeticException도 500 예외지만 더 구체적이기 때문에 이 코드로 적용 -->
+		<exception-type>java.lang.ArithmeticException</exception-type> 
+		<location>/ch11/exceptionType_arithmetic.jsp</location>
+	</error-page>
+	
+	<!-- 우선 순위: page 지시자의 errorPage 속성 > web.xml의 exception-type > web.xml의 error-code -->
+</web-app>
