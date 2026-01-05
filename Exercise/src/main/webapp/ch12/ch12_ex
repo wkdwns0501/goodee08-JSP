@@ -1,0 +1,64 @@
+12장
+
+01 클라이언트와 서버 사이에서 request와 response 객체를 먼저 받아 사전/사후 작업 등 
+공통적으로 필요한 부분을 처리하는 것은 무엇인가? 1
+① 필터 
+② 시큐리티 
+③ 유효성 검사 
+④ 예외 처리 
+
+02 Filter 인터페이스가 가지고 있는 메소드로 옳지 않은 것은 무엇인가? 4
+① init() 
+② doFilter() 
+③ destroy() 
+④ doPost() 
+
+03 Filter 인터페이스가 가지고 있는 메소드 중 JSP 컨테이너 내에서 초기화 작업을 수행할 
+필터 인스턴스를 생성한 후 한 번만 호출되는 메소드는 무엇인가? 1
+① init() 
+② doFilter() 
+③ destroy() 
+④ doPost() 
+
+04 Filter 인터페이스가 가지고 있는 메소드 중 JSP 컨테이너가 필터를 리소스에 적용할 때마다 호출되는 메소드는 무엇인가? 
+① init() 
+② doFilter() V
+③ destroy() 
+④ doPost() 
+
+05 Filter 인터페이스가 가지고 있는 메소드 중 JSP 컨테이너가 필터 인스턴스를 종료하기 전에 호출하는 메소드는 무엇인가? 
+① init() 
+② doFilter() 
+③ destroy() V
+④ doPost() 
+
+06 web.xml 파일에 <filter>를 구성하는 요소로 옳지 않은 것은 무엇인가? 4
+① <filter-name> 
+② <filter-class> 
+③ <init-param> 
+④ <init-name> 
+
+07 web.xml 파일에 <filter-mapping>을 구성하는 요소는 무엇인가? 1
+① <filter-name> 
+② <filter-class> 
+③ <init-param> 
+④ <init-name> 
+
+08 <filter> 요소를 이용하여 매개변수 param의 값 admin을 설정하는 프로그램의 빈칸을 채우시오. 
+
+<filter>
+    <filter-name>MyFilter</filter-name>
+    <filter-class>ch12.com.filter.LoggingFilter</filter-class>
+    <init-param>
+        ____________param____________ => <param-name> </param-name>
+        ____________admin____________ => <param-value> </param-value>          
+    </init-param> 
+</filter>
+
+09 <filter-mapping> 요소를 이용하여 모든 리소스에 필터를 적용하기 위해 
+URL 패턴을 설정하는 프로그램의 빈칸을 채우시오.  
+
+<filter-mapping>
+    <filter-name>MyFilter</filter-name>
+    <___________>__</___________> => <url-pattern>/*</url-pattern>     
+</filter-mapping>
