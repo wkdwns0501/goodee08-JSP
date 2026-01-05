@@ -13,6 +13,17 @@
 	<title>도서 정보</title>
 	<!-- 부트스트랩 연결 -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+	
+	<script type="text/javascript">
+		function addToCart() {
+			if (confirm('도서를 장바구니에 추가하시겠습니까?')) {
+				document.addForm.submit();
+			} else {
+				document.addForm.reset();
+			}
+		}
+	</script>
+	
 </head>
 <body>
 	<div class="container py-4">
@@ -57,9 +68,14 @@
 				<p><b>분류</b>: <%= book.getCategory() %></p>
 				<p><b>재고수</b>: <%= book.getUnitsInStock() %></p>
 				<h4><%= book.getUnitPrice() %> 원</h4>
-				<p>
-					<a href="#" class="btn btn-info">도서주문 &raquo;</a> 
-					<a href="./books.jsp" class="btn btn-secondary">도서목록 &raquo;</a>
+				<p> <!-- ID를 form으로 보내는 방법, input으로 보내는 방법 -->
+					<form action="addCart.jsp?id=<%= book.getBookId() %>" method="post" name="addForm">
+						<!-- post 요청이어도 쿼리스트링으로 데이터를 보낼 수 있음 -->
+						<input type="hidden" name="bookId" value="<%= book.getBookId() %>">
+						<a href="#" class="btn btn-info" onclick="addToCart()">도서주문 &raquo;</a> 
+						<a href="./cart.jsp" class="btn btn-warning">장바구니 &raquo;</a>
+						<a href="./books.jsp" class="btn btn-secondary">도서목록 &raquo;</a>
+					</form>
 				</p>
       </div>
  		</div>
