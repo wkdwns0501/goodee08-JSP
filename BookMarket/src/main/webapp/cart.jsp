@@ -40,7 +40,7 @@
     					<a href="deleteCart.jsp?cartId=<%= cartId %>" class="btn btn-danger">삭제하기</a>
     				</td>
     				<td align="right">
-    					<a href="deleteCart.jsp?cartId=<%= cartId %>" class="btn btn-success">주문하기</a>
+    					<a href="shippingInfo.jsp?cartId=<%= cartId %>" class="btn btn-success">주문하기</a>
     				</td>
     			</tr>
     		</table>
@@ -61,15 +61,18 @@
     					cartList = new ArrayList<Book>();
     				}
     				int sum = 0;
-    				for (Book item : cartList) {
-    					sum += item.getUnitPrice() * item.getQuantity();
+    				for (Book book : cartList) {
+    					int total = book.getUnitPrice() * book.getQuantity();
+    					sum += total;
     			%>
     			<tr>
-    				<td><%= item.getBookId() %> - <%= item.getName() %></td>
-    				<td><%= item.getUnitPrice() %>원</td>
-    				<td><%= item.getQuantity() %>권</td>
-    				<td><%= item.getUnitPrice() * item.getQuantity() %>원</td>
-    				<td><a href="" class="btn btn-danger">삭제</a></td>
+    				<td><%= book.getBookId() %> - <%= book.getName() %></td>
+    				<td><%= book.getUnitPrice() %>원</td>
+    				<td><%= book.getQuantity() %>권</td>
+    				<td><%= total %>원</td>
+    				<td>
+    					<a href="removeCart.jsp?id=<%= book.getBookId() %>" class="badge text-bg-danger">삭제</a>
+    				</td>
     			</tr>
     			<%
 		    		}
@@ -82,8 +85,8 @@
     				<th></th>
     			</tr>
     		</table>
+    		<a href="books.jsp" class="btn btn-secondary">&laquo; 쇼핑 계속하기</a>
     	</div>
-    	
  		</div>
  		
  		<!-- 푸터(바닥글) 영역 -->

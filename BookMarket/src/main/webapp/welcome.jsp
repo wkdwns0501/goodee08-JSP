@@ -50,6 +50,12 @@
       </div>
  		</div>
  		
+ 		<div class="">
+ 			<p>
+				<a href="books.jsp" class="btn btn-secondary">도서 목록 &raquo;</a>
+			</p>
+ 		</div>
+ 		
  		<!-- 푸터(바닥글) 영역 -->
  		<%@ include file="footer.jsp" %>
 	</div>
