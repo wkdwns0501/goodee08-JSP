@@ -6,7 +6,7 @@
 <header class="pb-3 mb-4 border-bottom">
 	<div class="container">
 		<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-		 <a href="./welcome.jsp" class="d-flex align-items-center text-dark text-decoration-none mb-3 mb-md-0 me-md-auto">
+		 <a href="<c:url value='/welcome.jsp'/>" class="d-flex align-items-center text-dark text-decoration-none mb-3 mb-md-0 me-md-auto">
 		 	<!-- 홈 아이콘 -->
 		  <svg width="32" height="32" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
 				<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
@@ -44,16 +44,19 @@
 		 </c:choose>
 		 	<!-- (중요) 공통 레이아웃(헤더나 메뉴)의 경우 위치에 따라 링크가 깨지는 구조이므로 절대 경로로 수정 -->
 		 	<li class="nav-item">
-		 		<a href="books.jsp" class="nav-link">도서 목록</a>
+		 		<a href="<c:url value='/books.jsp'/>" class="nav-link">도서 목록</a>
 		 	</li>
 		 	<li class="nav-item">
-		 		<a href="addBook.jsp" class="nav-link">도서 등록</a>
+		 		<a href="<c:url value='/addBook.jsp'/>" class="nav-link">도서 등록</a>
 		 	</li>
 		 	<li class="nav-item">
-		 		<a href="editBook.jsp?edit=update" class="nav-link">도서 수정</a>
+		 		<a href="<c:url value='/editBook.jsp?edit=update'/>" class="nav-link">도서 수정</a>
 		 	</li>
 		 	<li class="nav-item">
-		 		<a href="editBook.jsp?edit=delete" class="nav-link">도서 삭제</a>
+		 		<a href="<c:url value='/editBook.jsp?edit=delete'/>" class="nav-link">도서 삭제</a>
+		 	</li>
+		 	<li class="nav-item">
+		 		<a href="<c:url value='/BoardListAction.do?pageNum=1'/>" class="nav-link">게시판</a>
 		 	</li>
 		 </ul>
 		</div>
