@@ -3,7 +3,10 @@ package mvc.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.mysql.cj.protocol.Resultset;
 
 import mvc.database.DBConnection;
 
@@ -111,6 +114,7 @@ public class BoardDAO {
 		return null;
 	}
 	
+	// 게시글 등록
 	public int insertBoard(BoardDTO board) {
 		String sql = "INSERT INTO board (id, name, subject, content, regist_day, hit, ip) "
 					+ "VALUES (?, ?, ?, ?, DATE(NOW()), 0, ?)";
@@ -126,6 +130,40 @@ public class BoardDAO {
 			System.out.println("insertBoard 예외 발생: " + e);
 		}
 		return 0;
+	}
+	
+	// 선택된 글의 조회 수 증가
+	public void updateHit(Connection conn, int num) throws SQLException {
+		String sql = "UPDATE board SET hit = hit + 1 WHERE num = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		} // 예외 처리를 Service로 떠넘겨서 처리해야 함
+	}
+	
+	// 선택된 글 상세 내용 가져오기
+	public BoardDTO getBoardByNum(Connection conn, int num) throws SQLException {
+		String sql = "SELECT * FROM board WHERE num = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, num);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					BoardDTO board = new BoardDTO();
+					board.setNum(rs.getInt("num"));
+					board.setId(rs.getString("id"));
+					board.setName(rs.getString("name"));
+					board.setSubject(rs.getString("subject"));
+					board.setContent(rs.getString("content"));
+					board.setRegistDay(rs.getString("regist_day"));
+					board.setHit(rs.getInt("hit"));
+					board.setIp(rs.getString("ip"));
+					return board;
+//					throw new RuntimeException("게시글 트랜잭션 테스트");
+				}
+			}
+		}
+		// 예외 처리를 Service로 떠넘겨서 처리해야 함
+		return null;
 	}
 	
 }

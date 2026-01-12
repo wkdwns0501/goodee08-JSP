@@ -1,6 +1,8 @@
 package mvc.controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jakarta.servlet.RequestDispatcher;
@@ -9,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mvc.database.DBConnection;
 import mvc.model.BoardDAO;
 import mvc.model.BoardDTO;
 
@@ -34,9 +37,19 @@ public class BoardController extends HttpServlet {
 			// RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/list.jsp");
 			rd.forward(request, response);
 		} else if (command.equals("/BoardWriteForm.do")) {
-			// 글 등록 페이지 출력
+			// 글 등록 페이지 출력(조회)
 			requestLoginName(request);
 			request.getRequestDispatcher("/board/writeForm.jsp").forward(request, response);
+		} else if (command.equals("/BoardViewAction.do")) {
+			// 선택된 글 상세 페이지 출력
+			// 서비스에서 반환된 값을 뷰에 전달(가장 권장되는 구조)
+			BoardDTO board = requestBoardView(request);
+			
+			request.setAttribute("num", request.getParameter("num"));
+			request.setAttribute("page", request.getParameter("pageNum"));
+			request.setAttribute("board", board);
+			
+			request.getRequestDispatcher("/board/view.jsp").forward(request, response);
 		}
 		
 	}
@@ -51,7 +64,7 @@ public class BoardController extends HttpServlet {
 			// 새로운 글 등록
 			requestBoardWrite(request);
 			// 글 목록으로 리다이렉트
-	        response.sendRedirect(contextPath + "/BoardListAction.do?pageNum=1");
+	        response.sendRedirect(contextPath + "/BoardListAction.do"); // /BoardListAction.do?pageNum=1 도 가능
 		}
 	}
 	
@@ -62,7 +75,8 @@ public class BoardController extends HttpServlet {
 		
 		int pageNum = 1; // 현재 페이지 번호
 		
-		if (!request.getParameter("pageNum").isBlank()) {
+		if (request.getParameter("pageNum") != null 
+			&& !request.getParameter("pageNum").trim().isEmpty()) {
 			pageNum = Integer.parseInt(request.getParameter("pageNum"));
 		}
 		
@@ -93,6 +107,7 @@ public class BoardController extends HttpServlet {
 		request.setAttribute("name", name);
 	}
 	
+	// 게시글 등록
 	private int requestBoardWrite(HttpServletRequest request) {
 		BoardDAO dao = BoardDAO.getInstance();
 		BoardDTO board = new BoardDTO();
@@ -103,10 +118,55 @@ public class BoardController extends HttpServlet {
 		board.setContent(request.getParameter("content"));
 		board.setIp(request.getRemoteAddr());
 		
+		// 가입 일자를 자바에서 넣어줄 때
+		// String registDay = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+		// board.setRegistDay(registDay);
+		
 		// 이미 JSP에서 스크립트로 막고 있음
 		if(board.getSubject() == null || board.getSubject().trim().isEmpty()) return 0;
 		
 		return dao.insertBoard(board);
+	}
+	
+	// 선택된 글 상세 페이지 가져오기(단일 조회)
+	// (중요) 게시글이 정상적으로 조회된 경우에만 조회수를 증가(조회 실패 -> 조회수 증가도 취소)
+	// => 트랜잭션으로 묶기
+	// 1. 트랜잭션 처리는 DAO 내부가 아니라 "서비스 로직"에 위치
+	// 	  DAO는 트랜잭션을 모름, 단지 주어진 Connection으로 SQL을 실행할 뿐
+	// 2. 하나의 Connection을 공유해야 함
+	// 3. autoCommit = false 로 설정(기본값: true)
+	private BoardDTO requestBoardView(HttpServletRequest request) {
+		BoardDAO dao = BoardDAO.getInstance();
+		
+		int num = Integer.parseInt(request.getParameter("num")); // 게시글 번호
+		
+		// 트랜잭션 포맷
+		try (Connection conn = DBConnection.getConnection()) {
+			conn.setAutoCommit(false); // 자동 저장 끄기(트랜잭션 시작)
+			
+			try {
+				// 여러 DB 작업 수행
+				// 1. 게시글 조회
+				BoardDTO board = dao.getBoardByNum(conn, num);
+				if (board == null) {
+					throw new RuntimeException("게시글이 존재하지 않습니다.");
+				}
+				
+				// 2. 조회수 증가
+				dao.updateHit(conn, num);
+				
+				conn.commit(); // 작업 모두 성공 시 확정(DB에 최종 반영)
+				return board;
+			} catch (Exception e) {
+				conn.rollback(); // 하나라도 예외 발생 시 전부 취소
+				e.printStackTrace();
+				return null;
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }
